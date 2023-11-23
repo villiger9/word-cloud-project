@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Cloud Generator</title>
+  </head>
+  <body>
+    <h1>Word Cloud Generator</h1>
+    <textarea id="textInput" placeholder="Enter your text here..."></textarea>
+    <button onclick="generateWordCloud()">Generate Word Cloud</button>
+    <div id="wordcloudContainer"></div>
+
+    <script>
+      function generateWordCloud() {
+        const text = document.getElementById("textInput").value;
+        fetch("/generate_wordcloud", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `text=${encodeURIComponent(text)}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById(
+              "wordcloudContainer"
+            ).innerHTML = `<img src="${data.image}" alt="Word Cloud">`;
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </body>
+</html>
