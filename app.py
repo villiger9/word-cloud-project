@@ -7,13 +7,16 @@ import base64
 app = Flask(__name__)
 
 
+# Route to render the index.html template
 @app.route("/")
 def index():
     return render_template("index.html")
 
 
+# Route to generate word cloud from the input text
 @app.route("/generate_wordcloud", methods=["POST"])
 def generate_wordcloud():
+    # Get the input text from the form
     text = request.form["text"]
 
     # Generate word cloud
@@ -28,8 +31,10 @@ def generate_wordcloud():
         "data:image/png;base64," + base64.b64encode(img_buffer.getvalue()).decode()
     )
 
+    # Return the image URL in JSON format
     return jsonify({"image": img_str})
 
 
+# Run the application
 if __name__ == "__main__":
     app.run(debug=True)
